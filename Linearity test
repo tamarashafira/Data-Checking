@@ -1,0 +1,42 @@
+health=read.csv("Your file directory\\studi kasus 1.csv", sep = ";")
+health
+
+str(health)
+summary(health$hemoglobin)
+#linearity test
+boxplot(health[,2:3])
+boxplot(health[,5])
+boxplot(health[,6])
+boxplot(health$hemoglobin)
+plot(health$blood.pressure, health$blood.glucose)
+plot(health$age, health$hemoglobin)
+
+#categorical function
+dt= na.omit(health[1:13])
+dt$grup = 0
+for (i in 1:379){
+  if(dt$age[i] > 30){
+    dt$grup[i] = "Orang Tua"}
+  else if(dt$age[i] > 19){
+    dt$grup[i] = "Dewasa"}
+  else{
+    dt$grup[i] = "Anak-Anak"
+  }
+}
+table(dt$grup)
+
+#hypotesist test
+library(agricolae)
+bartlett.test(dt$blood.pressure, dt$grup)
+bartlett.test(dt$blood.glucose, dt$grup)
+bartlett.test(dt$hypertension, dt$grup)
+
+#visualization and insight
+library(ggplot2)
+ggplot(health, aes(x=blood.pressure, y=blood.glucose, col=age))+
+  geom_point()+
+  geom_smooth(method = "lm", se=)
+
+ggplot(health, aes(x=hemoglobin, y=age))+
+  geom_point()+
+  geom_smooth(method = "lm", se=)
